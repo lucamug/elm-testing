@@ -213,7 +213,7 @@ type alias Deal =
 
 dataDecoder : Decoder Shops
 dataDecoder =
-    Decode.at [ "daata" ] shopsDecoder
+    Decode.at [ "data" ] shopsDecoder
 
 
 shopsDecoder : Decoder Shops

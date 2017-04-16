@@ -1,8 +1,16 @@
-module Langs exposing (Model, Msg, view, update)
+module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+
+
+main =
+    beginnerProgram
+        { model = { items = [], db = [ "z", "x", "w" ] }
+        , view = view
+        , update = update
+        }
 
 
 type alias Model =
@@ -14,6 +22,21 @@ type Msg
     | Remove
 
 
+view model =
+    div []
+        [ h1 [] [ text "test" ]
+        , button [ onClick Add ] [ text "Add" ]
+        , button [ onClick Remove ] [ text "Remove" ]
+        , ul [ class "languages" ]
+            (List.map languageItem model.items)
+        ]
+
+
+languageItem language =
+    li [ class "lang" ] [ text language ]
+
+
+update : Msg -> Model -> Model
 update msg model =
     let
         length =
@@ -39,17 +62,3 @@ removeLang : Int -> Model -> List String
 removeLang length model =
     model.items
         |> List.take (length - 1)
-
-
-view model =
-    div []
-        [ h2 [] [ text "test" ]
-        , button [ onClick Add ] [ text "Add" ]
-        , button [ onClick Remove ] [ text "Remove" ]
-        , ul [ class "languages" ]
-            (List.map languageItem model.items)
-        ]
-
-
-languageItem language =
-    li [ class "lang" ] [ text language ]

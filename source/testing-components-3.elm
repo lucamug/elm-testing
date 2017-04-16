@@ -12,7 +12,7 @@ import Html.Events exposing (..)
 
 init =
     { frontend = { items = [], db = [ "a", "b", "c" ] }
-    , backend = { items = [], db = [ "1", "2", "3" ] }
+    , backend = { items = [], db = [ "f", "ff", "fff" ] }
     }
 
 
@@ -39,8 +39,8 @@ update msg model =
 view model =
     div []
         [ h1 [] [ text "test" ]
-        , Html.map Frontend (Langs.view model.frontend)
-        , Html.map Backend (Langs.view model.backend)
+        , div [ style [ ( "float", "left" ) ] ] [ Html.map Frontend (Langs.view model.frontend) ]
+        , div [ style [ ( "float", "left" ) ] ] [ Html.map Backend (Langs.view model.backend) ]
         ]
 
 

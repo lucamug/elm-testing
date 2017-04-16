@@ -39,7 +39,10 @@ update msg model =
 view model =
     div []
         [ h1 [] [ text "test" ]
-        , div [ style [ ( "float", "left" ) ] ] [ Html.map Frontend (Langs.view model.frontend) ]
+        , div [ style [ ( "float", "left" ) ] ]
+            [ h2 [] [ text "test" ]
+            , Html.map Frontend (Langs.view model.frontend)
+            ]
         , div [ style [ ( "float", "left" ) ] ] [ Html.map Backend (Langs.view model.backend) ]
         ]
 

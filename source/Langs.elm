@@ -43,8 +43,7 @@ removeLang length model =
 
 view model =
     div []
-        [ h2 [] [ text "test" ]
-        , button [ onClick Add ] [ text "Add" ]
+        [ button [ onClick Add ] [ text "Add" ]
         , button [ onClick Remove ] [ text "Remove" ]
         , ul [ class "languages" ]
             (List.map languageItem model.items)

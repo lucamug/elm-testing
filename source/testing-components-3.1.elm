@@ -1,4 +1,4 @@
--- From https://www.youtube.com/watch?v=wRGl3CveTgo#t=2399.056449
+-- From https://www.youtube.com/watch?v=wRGl3CveTgo
 
 
 module Main exposing (..)
@@ -10,32 +10,32 @@ import Html.Events exposing (..)
 
 
 init =
-    { frontend = { items = [], db = [ "a", "b", "c" ] }
-    , backend = { items = [], db = [ "f", "ff", "fff" ] }
+    { widget1 = { items = [], db = [ "a", "b", "c" ] }
+    , widget2 = { items = [], db = [ "f", "ff", "fff" ] }
     , widget3 = { items = [], db = [ "X", "XX", "XXX" ] }
     }
 
 
 type alias Model =
-    { frontend : Langs.Model
-    , backend : Langs.Model
+    { widget1 : Langs.Model
+    , widget2 : Langs.Model
     , widget3 : Langs.Model
     }
 
 
 type Msg
-    = Frontend Langs.Msg
-    | Backend Langs.Msg
+    = Widget1 Langs.Msg
+    | Widget2 Langs.Msg
     | Widget3 Langs.Msg
 
 
 update msg model =
     case msg of
-        Frontend widgetMsg ->
-            { model | frontend = Langs.update widgetMsg model.frontend }
+        Widget1 widgetMsg ->
+            { model | widget1 = Langs.update widgetMsg model.widget1 }
 
-        Backend widgetMsg ->
-            { model | backend = Langs.update widgetMsg model.backend }
+        Widget2 widgetMsg ->
+            { model | widget2 = Langs.update widgetMsg model.widget2 }
 
         Widget3 widgetMsg ->
             { model | widget3 = Langs.update widgetMsg model.widget3 }
@@ -43,8 +43,8 @@ update msg model =
 
 view model =
     div []
-        [ div [ style [ ( "float", "left" ), ( "padding", "1em" ) ] ] [ Html.map Frontend (Langs.view model.frontend) ]
-        , div [ style [ ( "float", "left" ), ( "padding", "1em" ) ] ] [ Html.map Backend (Langs.view model.backend) ]
+        [ div [ style [ ( "float", "left" ), ( "padding", "1em" ) ] ] [ Html.map Widget1 (Langs.view model.widget1) ]
+        , div [ style [ ( "float", "left" ), ( "padding", "1em" ) ] ] [ Html.map Widget2 (Langs.view model.widget2) ]
         , div [ style [ ( "float", "left" ), ( "padding", "1em" ) ] ] [ Html.map Widget3 (Langs.view model.widget3) ]
         ]
 

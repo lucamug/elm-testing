@@ -1,53 +1,52 @@
+-- From https://www.youtube.com/watch?v=wRGl3CveTgo#t=2399.056449
+-- Still not working
+
+
 module Main exposing (..)
 
+import Langs exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 
 
-languages =
-    [ "a", "b", "c" ]
+init =
+    { frontend = { items = [], db = [ "a", "b", "c" ] }
+    , backend = { items = [], db = [ "1", "2", "3" ] }
+    }
+
+
+type alias Model =
+    { frontend : Langs.Model
+    , backend : Langs.Model
+    }
+
+
+type Msg
+    = Frontend Langs.Msg
+    | Backend Langs.Msg
+
+
+update msg model =
+    case msg of
+        Frontend frontendMsg ->
+            { model | frontend = Langs.update frontendMsg model.frontend }
+
+        Backend backendMsg ->
+            { model | backend = Langs.update backendMsg model.backend }
+
+
+view model =
+    div []
+        [ h1 [] [ text "test" ]
+        , Html.map Frontend (Langs.view model.frontend)
+        , Html.map Backend (Langs.view model.backend)
+        ]
 
 
 main =
     beginnerProgram
-        { model = []
+        { model = init
         , view = view
         , update = update
         }
-
-
-type Msg
-    = Add
-    | Remove
-
-
-view langs =
-    div []
-        [ h1 [] [ text "test" ]
-        , button [ onClick Add ] [ text "Add" ]
-        , button [ onClick Remove ] [ text "Remove" ]
-        , ul [ class "languages" ]
-            (List.map languageItem langs)
-        ]
-
-
-languageItem language =
-    li [ class "lang" ] [ text language ]
-
-
-update msg langs =
-    let
-        length =
-            List.length langs
-    in
-        case msg of
-            Add ->
-                languages
-                    |> List.drop length
-                    |> List.take 1
-                    |> List.append langs
-
-            Remove ->
-                langs
-                    |> List.take (length - 1)

@@ -9,17 +9,18 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 
 
-init =
-    { widget1 = { items = [], db = [ "a", "b", "c" ] }
-    , widget2 = { items = [], db = [ "f", "ff", "fff" ] }
-    , widget3 = { items = [], db = [ "X", "XX", "XXX" ] }
-    }
-
-
 type alias Model =
     { widget1 : Langs.Model
     , widget2 : Langs.Model
     , widget3 : Langs.Model
+    }
+
+
+init : Model
+init =
+    { widget1 = { items = [], db = [ "a", "b", "c", "d", "e", "f" ] }
+    , widget2 = { items = [], db = [ "f", "ff", "fff" ] }
+    , widget3 = { items = [], db = [ "X", "XX", "XXX" ] }
     }
 
 
@@ -29,6 +30,7 @@ type Msg
     | Widget3 Langs.Msg
 
 
+update : Msg -> Model -> Model
 update msg model =
     case msg of
         Widget1 widgetMsg ->
@@ -41,6 +43,7 @@ update msg model =
             { model | widget3 = Langs.update widgetMsg model.widget3 }
 
 
+view : Model -> Html Msg
 view model =
     div []
         [ div [ style [ ( "float", "left" ), ( "padding", "1em" ) ] ] [ Html.map Widget1 (Langs.view model.widget1) ]
@@ -49,6 +52,7 @@ view model =
         ]
 
 
+main : Program Never Model Msg
 main =
     beginnerProgram
         { model = init

@@ -1,3 +1,7 @@
+-- http://noredink.github.io/json-to-elm/
+-- http://simonh1000.github.io/decoder/
+
+
 module Main exposing (..)
 
 import Html exposing (..)

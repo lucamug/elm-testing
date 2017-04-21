@@ -15,6 +15,10 @@ import Json.Decode.Pipeline as JP
 import String
 
 
+styles =
+    Css.asPairs >> Html.Attributes.style
+
+
 main =
     Html.program
         { init = init "no ip yet"
@@ -115,10 +119,6 @@ update msg model =
 
 
 -- VIEW
-
-
-styles =
-    Css.asPairs >> Html.Attributes.style
 
 
 view : Model -> Html Msg

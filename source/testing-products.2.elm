@@ -52,10 +52,23 @@ init =
 
 
 type Msg
-    = Product1 Products.Msg
-    | Product2 Products.Msg
-    | Product3 Products.Msg
-    | Product4 Products.Msg
+    = L0 Products.Msg
+    | L1 Products.Msg
+
+
+view model =
+    let
+        product =
+            getProduct model.productList 0
+
+        productView =
+            Products.view product
+    in
+        div []
+            [ div [] [ Html.map L0 productView ]
+            , div [] [ Html.map L1 productView ]
+            , div [] [ text (toString (L0)) ]
+            ]
 
 
 update : Msg -> Model -> Model
@@ -70,8 +83,8 @@ update msg model =
 
 --   { model | productList = setProduct (model.productList position product)
 {-
-    Product1 productMsg ->
-        { model | product1 = Products.update productMsg (getProduct model.productList 0) }
+    Product1 productMsg position ->
+        { model | product1 = Products.update productMsg (getProduct model.productList position) }
 
    Product2 productMsg ->
        { model | product2 = Products.update productMsg model.product2 }
@@ -84,16 +97,6 @@ update msg model =
        { model | product4 = Products.update productMsg model.product4 }
 
 -}
-
-
-view : Model -> Html Msg
-view model =
-    div []
-        [ div [] [ Html.map Product1 (Products.view (getProduct model.productList 0)) ]
-        , div [] [ Html.map Product2 (Products.view (getProduct model.productList 1)) ]
-        , div [] [ Html.map Product3 (Products.view (getProduct model.productList 2)) ]
-        , div [] [ Html.map Product4 (Products.view (getProduct model.productList 3)) ]
-        ]
 
 
 setProduct productList position product =

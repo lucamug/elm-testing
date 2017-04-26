@@ -10,5 +10,10 @@ styles =
 
 
 main =
-    div [ styles [ backgroundColor (hex "ffa331"), opacity (num 0.5) ] ]
+    div
+        [ styles
+            [ backgroundColor (hex "ffa331")
+            , opacity (num 0.5)
+            ]
+        ]
         [ Html.text "Hi!" ]

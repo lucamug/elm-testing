@@ -41,6 +41,7 @@ removeLang length model =
         |> List.take (length - 1)
 
 
+view : Model -> Html Msg
 view model =
     div []
         [ button [ onClick Add ] [ text "Add" ]
@@ -50,5 +51,6 @@ view model =
         ]
 
 
+languageItem : String -> Html Msg
 languageItem language =
     li [ class "lang" ] [ text language ]

@@ -18,7 +18,7 @@ type alias Model =
 
 init : Model
 init =
-    { widget1 = { items = [], db = [ "a", "b", "c", "d", "e", "f" ] }
+    { widget1 = { items = [ "ciao" ], db = [ "a", "b", "c", "d", "e", "f" ] }
     , widget2 = { items = [], db = [ "f", "ff", "fff" ] }
     , widget3 = { items = [], db = [ "X", "XX", "XXX" ] }
     }
@@ -30,14 +30,18 @@ type Msg
     | Widget3 Langs.Msg
 
 
+widgetsQuantity =
+    3
+
+
 update : Msg -> Model -> Model
 update msg model =
     case msg of
         Widget1 widgetMsg ->
-            { model | widget1 = Langs.update widgetMsg model.widget1 }
+            { model | widget2 = Langs.update widgetMsg model.widget2 }
 
         Widget2 widgetMsg ->
-            { model | widget2 = Langs.update widgetMsg model.widget2 }
+            { model | widget1 = Langs.update widgetMsg model.widget1 }
 
         Widget3 widgetMsg ->
             { model | widget3 = Langs.update widgetMsg model.widget3 }

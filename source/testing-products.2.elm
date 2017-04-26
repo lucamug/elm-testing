@@ -60,61 +60,67 @@ type Msg
 
 update : Msg -> Model -> Model
 update msg model =
-    model
+    let
+        _ =
+            Debug.log "update:msg" msg
+    in
+        model
 
 
 
+--   { model | productList = setProduct (model.productList position product)
 {-
-   update : Msg -> Model -> Model
-   update msg model =
-       case msg of
-           Product1 productMsg ->
-               { model | product1 = Products.update productMsg model.product1 }
+    Product1 productMsg ->
+        { model | product1 = Products.update productMsg (getProduct model.productList 0) }
 
-           Product2 productMsg ->
-               { model | product2 = Products.update productMsg model.product2 }
+   Product2 productMsg ->
+       { model | product2 = Products.update productMsg model.product2 }
 
-           Product3 productMsg ->
-               { model | product3 = Products.update productMsg model.product3 }
 
-           Product4 productMsg ->
-               { model | product4 = Products.update productMsg model.product4 }
+   Product3 productMsg ->
+       { model | product3 = Products.update productMsg model.product3 }
+
+   Product4 productMsg ->
+       { model | product4 = Products.update productMsg model.product4 }
 
 -}
 
 
 view : Model -> Html Msg
 view model =
-    div [] [ text (toString (model.productList)) ]
+    div []
+        [ div [] [ Html.map Product1 (Products.view (getProduct model.productList 0)) ]
+        , div [] [ Html.map Product2 (Products.view (getProduct model.productList 1)) ]
+        , div [] [ Html.map Product3 (Products.view (getProduct model.productList 2)) ]
+        , div [] [ Html.map Product4 (Products.view (getProduct model.productList 3)) ]
+        ]
 
 
+setProduct productList position product =
+    let
+        productArray =
+            Array.fromList productList
 
-{-
-
-   view : Model -> Html Msg
-   view model =
-       div
-           [ styles
-               [ Css.padding (Css.px 10)
-               ]
-           ]
-           [ header
-           , div [] [ Html.map Product1 (Products.view ifNothingThenEmptyProduct (Array.get 0 model.productList)) ]
-           , div [] [ Html.map Product2 (Products.view ifNothingThenEmptyProduct (Array.get 0 model.productList)) ]
-           , div [] [ Html.map Product3 (Products.view ifNothingThenEmptyProduct (Array.get 0 model.productList)) ]
-           , div [] [ Html.map Product4 (Products.view ifNothingThenEmptyProduct (Array.get 0 model.productList)) ]
-           , footer
-           ]
--}
+        newProductArray =
+            Array.set position product productArray
+    in
+        Array.toList newProductArray
 
 
-ifNothingThenEmptyProduct product =
-    case product of
-        Nothing ->
-            Product "Empty" 0 False
+getProduct productList position =
+    let
+        productArray =
+            Array.fromList productList
 
-        Just val ->
-            val
+        product =
+            Array.get position productArray
+    in
+        case product of
+            Nothing ->
+                Product ("PRODUCT NOT FOUND Position " ++ toString position ++ " not found") 0 False
+
+            Just val ->
+                val
 
 
 main : Program Never Model Msg

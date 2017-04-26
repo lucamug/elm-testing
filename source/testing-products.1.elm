@@ -24,6 +24,22 @@ type alias Model =
     }
 
 
+type alias Product =
+    { name : String
+    , price : Int
+    , priceInView : Bool
+    }
+
+
+products : List Product
+products =
+    [ Product "Product 1" 12 False
+    , Product "Product 2" 24 False
+    , Product "Product 3" 36 False
+    , Product "Product 4" 48 False
+    ]
+
+
 init : Model
 init =
     { product1 = { name = "Product 1", price = 12, priceInView = False }

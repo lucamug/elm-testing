@@ -19,20 +19,23 @@ type alias Model =
 
 
 type Msg
-    = ShowPrice
-    | HidePrice
+    = ShowPrice Int
+    | HidePrice Int
 
 
 update msg model =
     case msg of
-        ShowPrice ->
+        ShowPrice position ->
             { model | priceInView = True }
 
-        HidePrice ->
+        HidePrice position ->
             { model | priceInView = False }
 
 
-view : Model -> Html Msg
+
+-- view : Model -> Html Msg
+
+
 view model =
     div
         [ styles
@@ -44,14 +47,15 @@ view model =
             ]
         ]
         [ div [] [ text model.name ]
+        , div [] [ text "Position: " ]
         , if model.priceInView then
             div []
-                [ button [ onClick HidePrice ] [ text "Hide Price" ]
+                [ button [ onClick (HidePrice 100) ] [ text "Hide Price" ]
                 , div [] [ text (toString model.price ++ " €") ]
                 ]
           else
             div []
-                [ button [ onClick ShowPrice ] [ text "Show Price" ]
+                [ button [ onClick (ShowPrice 200) ] [ text "Show Price" ]
                 , div [] [ text "" ]
                 ]
         ]

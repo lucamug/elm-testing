@@ -46,8 +46,7 @@ type alias Model =
 
 init : Model
 init =
-    { productList = products
-    }
+    Model products
 
 
 type Msg
@@ -89,6 +88,7 @@ productView product position =
             , ( "cursor", "pointer" )
             , ( "text-align", "center" )
             , ( "background-color", "#ffffff" )
+            , ( "border", "1px solid grey" )
             , ( "width", "120px" )
             ]
         ]

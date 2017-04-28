@@ -47,48 +47,68 @@ view model =
 
 pView product position =
     div
-        [ style
-            [ ( "padding", "20px" )
-            , ( "margin", "10px" )
-            , ( "display", "inline-block" )
-            , ( "text-align", "center" )
-            , ( "background-color", "#ffffff" )
-            , ( "width", "120px" )
+        [ class "container"
+        , style
+            [ ( "position", "relative" )
+            , ( "perspective", "800px" )
             ]
         ]
-        [ div [] [ text product.name ]
-        , div
-            [ style
-                [ ( "padding-bottom", "100%" )
-                , ( "position", "relative" )
+        [ div
+            [ id "card"
+            , style
+                [ ( "width", "100%" )
+                , ( "height", "100%" )
+                , ( "transition", "transform 1s" )
+                , ( "transform-style", "preserve-3d" )
                 ]
             ]
-            [ img
-                [ src product.picture
+            [ div
+                [ class "front"
                 , style
-                    [ ( "position", "absolute" )
-                    , ( "max-width", "100%" )
-                    , ( "max-width", "70%" )
-                    , ( "max-height", "70%" )
-                    , ( "margin", "auto" )
-                    , ( "top", "0" )
-                    , ( "left", "0" )
-                    , ( "bottom", "0" )
-                    , ( "right", "0" )
-                    , ( "max-height", "100%" )
+                    [ ( "padding", "20px" )
+                    , ( "margin", "10px" )
+                    , ( "display", "inline-block" )
+                    , ( "textAlign", "center" )
+                    , ( "backgroundColor", "#ffffff" )
+                    , ( "width", "120px" )
+                    , ( "backface-visibility", "hidden" )
                     ]
                 ]
-                []
+                [ div [] [ text product.name ]
+                , div
+                    [ style
+                        [ ( "padding-bottom", "100%" )
+                        , ( "position", "relative" )
+                        ]
+                    ]
+                    [ img
+                        [ src product.picture
+                        , style
+                            [ ( "position", "absolute" )
+                            , ( "max-width", "100%" )
+                            , ( "max-width", "70%" )
+                            , ( "max-height", "70%" )
+                            , ( "margin", "auto" )
+                            , ( "top", "0" )
+                            , ( "left", "0" )
+                            , ( "bottom", "0" )
+                            , ( "right", "0" )
+                            , ( "max-height", "100%" )
+                            ]
+                        ]
+                        []
+                    ]
+                , if product.priceInView then
+                    div []
+                        [ button [ style [ ( "backgroundColor", "#aaffaa" ) ], onClick (HidePrice position) ] [ text (toString product.price ++ "€") ]
+                        ]
+                  else
+                    div []
+                        [ button [ onClick (ShowPrice position) ] [ text "Show Price" ]
+                        , div [] [ text "" ]
+                        ]
+                ]
             ]
-        , if product.priceInView then
-            div []
-                [ button [ style [ ( "backgroundColor", "#aaffaa" ) ], onClick (HidePrice position) ] [ text (toString product.price ++ "€") ]
-                ]
-          else
-            div []
-                [ button [ onClick (ShowPrice position) ] [ text "Show Price" ]
-                , div [] [ text "" ]
-                ]
         ]
 
 

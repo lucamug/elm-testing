@@ -23,6 +23,16 @@ type Msg
     | HidePrice
 
 
+update : Msg -> Model -> Model
+update msg model =
+    case msg of
+        ShowPrice ->
+            { model | priceInView = True }
+
+        HidePrice ->
+            { model | priceInView = False }
+
+
 view : Model -> Html Msg
 view model =
     div
@@ -86,15 +96,6 @@ view model =
                 ]
                 [ text "Click for Price" ]
         ]
-
-
-update msg model =
-    case msg of
-        ShowPrice ->
-            { model | priceInView = True }
-
-        HidePrice ->
-            { model | priceInView = False }
 
 
 main : Program Never Model Msg

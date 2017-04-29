@@ -1,0 +1,156 @@
+Tutorial - How to recycle in Elm
+
+
+I tried to recycle and make generic a simple Elm script that show a product box.
+The starting point is a simple application that has a name, a picture and a price that can be displayed or hidden clicking on the product box.
+
+This is the script:
+
+<script src="https://gist.github.com/lucamug/c0d5b93b686e85aa3045dbc1b147286e.js"></script>
+
+This is the app:
+
+https://ellie-app.com/33STDKfQYRna1/0
+
+Before proceeding I added some style and animation. This is the enhanced version:
+
+<script src="https://gist.github.com/lucamug/34e786023ea44b23b4454a7d65abce71.js"></script>
+
+https://ellie-app.com/33STDKfQYRna1/1
+
+Now I want to have the products to be in a list and I want to have the interface to display them all, each of them with its own independent interaction
+
+So, first of all I rename the Model to Product
+
+Before:
+
+type alias Model =
+    { name : String
+    , price : Float
+    , priceInView : Bool
+    , picture : String
+    }
+
+After:
+
+type alias Product =
+    { name : String
+    , price : Float
+    , priceInView : Bool
+    , picture : String
+    }
+
+Then I create the new Model that is actually just a list of products:
+
+type alias Model =
+    { productList : List Product
+    }
+
+And I initialize it with a list of product:
+
+init : Model
+init =
+    Model
+        [ Product "Photocamera" 24.31 False "https://....jpg"
+        , Product "TV" 24.22 False "https://....jpg"
+        ....
+        ]
+
+I need to identify each singular product now. I will do it using the position inside the List. Similar to what I have done before for the model, I rename the old view of the product to productView and I add a position parameter that is the position inside the List:
+
+viewProduct : Product -> Int -> Html Msg
+viewProduct product position =
+    div
+        [ if product.priceInView then
+            onClick (HidePrice position)
+          else
+            onClick (ShowPrice position)
+	-- The rest of the view is the same as before 
+
+Now the two messages sent onClick have the position as parameter.
+I update the Msg list as well:
+
+type Msg
+    = ShowPrice Int
+    | HidePrice Int
+
+So now the update function will know which product has received the click
+
+I need now to create a view function that loop all the product and call the productView for each of them. To do so, I use "List.indexedMap":
+
+http://package.elm-lang.org/packages/elm-lang/core/latest/List#indexedMap
+
+This is the command
+
+(List.indexedMap (\position product -> viewProduct product position) model.productList)
+
+For each product in model.productList, this is calling viewProduct:
+
+viewProduct product0 0
+viewProduct product1 1
+viewProduct product2 2
+viewProduct product3 3
+.. etc.
+
+Now we need to change the update function that is the most difficult part, probably.
+
+First I need two helpers that extract and add back a product from the List based on its position. 
+
+The "getter" first convert the List into an Array with Array.fromList, then it gets the product with Array.get
+
+This return a Maybe Product. I use a condition to convert a Maybe product into a Product
+
+This is the getter:
+
+getProduct productList position =
+    let
+        product =
+            Array.get position (Array.fromList productList)
+    in
+        case product of
+            Nothing ->
+                Product ("PRODUCT NOT FOUND Position " ++ toString position ++ " not found") 0 False ""
+
+            Just val ->
+                val
+
+The "setter" use Array.set:
+
+setProduct productList position product =
+    let
+        productArray =
+            Array.set position product (Array.fromList productList)
+    in
+        Array.toList productArray
+
+We are almost there
+
+Now using the setter and the getter I create a function that update the field princeInView using the paramenter "value". This function accept the list of products and return an updated new list of products.
+
+updateProduct productList position value =
+    let
+        oldProduct =
+            getProduct productList position
+
+        newProduct =
+            { oldProduct | priceInView = value }
+    in
+        setProduct productList position newProduct
+
+This function is needed in the new "update" function to update the model:
+
+update msg model =
+    case msg of
+        ShowPrice position ->
+            { model | productList = updateProduct model.productList position True }
+
+        HidePrice position ->
+            { model | productList = updateProduct model.productList position False }
+
+This is all. You can find the final script here:
+
+<script src="https://gist.github.com/lucamug/2daea8f78c861a226fc80d08270fa296.js"></script>
+
+https://ellie-app.com/33STDKfQYRna1/2
+
+Is there a simpler way to implement this? Let me know in the comments below

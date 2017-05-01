@@ -47,7 +47,6 @@ view model =
             ]
         ]
         [ div [] [ text model.name ]
-        , div [] [ text "Position: " ]
         , if model.priceInView then
             div []
                 [ button [ onClick (HidePrice 100) ] [ text "Hide Price" ]

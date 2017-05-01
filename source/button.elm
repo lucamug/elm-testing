@@ -9,7 +9,9 @@ main =
 
 
 type alias Model =
-    Int
+    { counter : Int
+    , id : Int
+    }
 
 
 type Msg
@@ -19,7 +21,7 @@ type Msg
 
 init : Model
 init =
-    0
+    Model 0 999
 
 
 view model =
@@ -31,9 +33,13 @@ view model =
 
 
 update msg model =
-    case Debug.log "button:msg" msg of
-        Increment value ->
-            model + value
+    let
+        counter =
+            model.counter
+    in
+        case Debug.log "button:msg" msg of
+            Increment value ->
+                { model | counter = counter + value }
 
-        Decrement value ->
-            model + value
+            Decrement value ->
+                { model | counter = counter + value }
